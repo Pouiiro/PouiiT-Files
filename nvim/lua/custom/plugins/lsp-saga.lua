@@ -12,7 +12,7 @@ return {
         enable = false,
       },
       diagnostic = {
-        on_insert = true,
+        on_insert = false,
       },
       code_action = {
         show_server_name = true,

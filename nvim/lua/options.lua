@@ -3,6 +3,7 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 -- Make line numbers default
+
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
@@ -15,12 +16,9 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -87,45 +85,22 @@ vim.o.statusline = vim.o.tabline
 
 vim.o.showtabline = 0
 
--- Disable Copilot globally
-vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-  pattern = '*',
-  callback = function()
+local function manage_copilot()
+  local file_path = vim.fn.expand '%:p'
+  -- Check if the file path contains 'myApp' directory anywhere in the path
+  if string.find(file_path, '/ac-cloud/', 1, true) then
+    if vim.fn.exists ':Copilot' == 2 then -- Check if the Copilot command exists
+      vim.cmd 'Copilot enable'
+    end
+  else
     if vim.fn.exists ':Copilot' == 2 then -- Check if the Copilot command exists
       vim.cmd 'Copilot disable'
     end
-  end,
-})
+  end
+end
 
--- Enable Copilot for specific directory (e.g., ~/dev/ac-cloud/)
-vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+-- Enable Copilot for specific directory
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter', 'InsertLeave', 'WinEnter' }, {
   pattern = '*',
-  callback = function()
-    local file_path = vim.fn.expand '%:p'
-    if string.match(file_path, '/dev/ac%-cloud/') then
-      if vim.fn.exists ':Copilot' == 2 then -- Check if the Copilot command exists
-        vim.cmd 'Copilot enable'
-      end
-    end
-  end,
+  callback = manage_copilot,
 })
-
--- vim.api.nvim_create_user_command('Format', function()
---   local formatter = get_closest_formatter {
---     biome = { 'biome.json' },
---     prettier = { '.prettierrc' },
---     stylua = { 'stylua.toml' },
---   }
---
---   if not formatter then
---     print 'formatter not found, using lsp'
---     require('conform').format { async = true, lsp_fallback = true }
---   else
---     print('formatting with ' .. formatter[1])
---     require('conform').format {
---       async = true,
---       formatters = formatter,
---       lsp_fallback = false,
---     }
---   end
--- end, {})

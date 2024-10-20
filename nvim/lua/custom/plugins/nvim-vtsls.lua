@@ -1,1 +1,2 @@
-return { 'yioneko/nvim-vtsls' }
+return {}
+-- return { 'yioneko/nvim-vtsls', config = {} }
