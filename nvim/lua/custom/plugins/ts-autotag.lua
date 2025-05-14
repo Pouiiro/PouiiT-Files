@@ -1,6 +1,5 @@
 return {
-  'windwp/nvim-ts-autotag',
-  config = function()
-    require('nvim-ts-autotag').setup()
-  end,
+  'tronikelis/ts-autotag.nvim',
+  event = 'VeryLazy',
+  opts = {},
 }

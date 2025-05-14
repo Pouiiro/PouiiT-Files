@@ -1,5 +1,6 @@
 return {
   'echasnovski/mini.move',
+  event = 'VeryLazy',
   config = function()
     require('mini.move').setup()
     local keymap = vim.keymap

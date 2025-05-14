@@ -3,10 +3,6 @@
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
---
-local keymap = vim.keymap
-local opts = { noremap = true, silent = true }
-
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
@@ -30,10 +26,16 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
+-- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+-- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+-- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
+-- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -49,60 +51,68 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- File tree keymaps
-vim.keymap.set({ 'n' }, '<leader>e', function()
-  local api = require 'nvim-tree.api'
-  api.tree.collapse_all(true)
-  api.tree.toggle { find_file = true, focus = true }
-end, { desc = 'Open file tree', noremap = true, silent = true })
+local map = vim.keymap.set
 
--- Movement in insert mode
-keymap.set('i', '<C-e>', '<C-o>A')
-keymap.set('i', '<C-i>', '<C-o>I')
+map('n', '<C-s>', '<cmd>w<cr>', { desc = 'Save' })
+map('i', '<C-s>', '<cmd>w<cr><ESC>', { desc = 'Save' })
 
--- Select All
-keymap.set('n', '<C-a>', 'ggVG')
+vim.api.nvim_set_keymap('i', '<C-e>', '<Esc>A', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '<C-i>', '<Esc>^i', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>qall!<cr>', { noremap = true, silent = true, desc = 'Quit' })
 
--- Split window
-keymap.set('n', 'ss', ':split<Return>')
-keymap.set('n', 'sv', ':vsplit<Return>')
-keymap.set('n', 'sc', '<C-w>q')
+vim.api.nvim_set_keymap('x', 'p', [["_dP]], { noremap = true, silent = true })
 
--- Resize window
-keymap.set('n', "<C-'>", '<C-w><')
-keymap.set('n', '<C-ö>', '<C-w>>')
-keymap.set('n', '<C-ä>', '<C-w>+')
-keymap.set('n', '<C-å>', '<C-w>-')
+-- Buffer shit (tabs)
+map('n', '<Tab>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true, desc = 'next buffer' })
+map('n', '<S-Tab>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true, desc = 'previous buffer' })
 
--- Typescript
-keymap.set('n', '<C-t>', ':Lspsaga peek_type_definition<cr>', { noremap = true, silent = true, desc = 'Peek to type definition' })
-keymap.set('n', '<C-d>', ':Lspsaga peek_definition<cr>', { noremap = true, silent = true, desc = 'Peek to definition' })
-keymap.set('n', '<C-f>', ':Lspsaga code_action<cr>', { noremap = true, silent = true, desc = 'Code actions' })
-keymap.set('n', '<C-i>', ':Lspsaga finder<cr>', { noremap = true, silent = true, desc = 'Find implementations' })
-keymap.set('n', '<C-h>', ':Lspsaga hover_doc<cr>', { noremap = true, silent = true, desc = 'Hover definition' })
-keymap.set('n', '<C-o>', ':Lspsaga outline<cr>', { noremap = true, silent = true, desc = 'Outline of current buffer' })
-keymap.set('n', '<C-n>', ':Lspsaga rename<cr>', { noremap = true, silent = true, desc = 'Rename instances' })
-keymap.set('n', '<C-j>', ':lua vim.lsp.buf.signature_help()<cr>', { noremap = true, silent = true, desc = 'Show doc cmp help' })
+map('n', '<C-x>', vim.diagnostic.open_float, { noremap = true, silent = true, desc = 'Open diag float' })
+map('n', '<C-f>', vim.lsp.buf.code_action, { noremap = true, silent = true, desc = 'Code actions' })
+map('n', '<C-h>', function()
+  vim.lsp.buf.hover { border = 'single', max_height = 25, max_width = 120, focusable = false, silent = true }
+end, { noremap = true, silent = true, desc = 'Hover definition' })
+map('n', '<C-j>', vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = 'Show doc cmp help' })
+map('n', '<C-,>', vim.diagnostic.goto_next, { noremap = true, silent = true, desc = 'Go to next diagnostic' })
+map('n', '<C-m>', vim.diagnostic.goto_prev, { noremap = true, silent = true, desc = 'Go to previous diagnostic' })
 
--- Tabs
-keymap.set('n', '<tab>', '<cmd>bnext<cr>', opts)
-keymap.set('n', '<s-tab>', '<cmd>bprev<cr>', opts)
+-- Copilot
+map({ 'i', 'c' }, '<C-n>', function()
+  require('copilot.suggestion').next()
+end, { noremap = true, desc = 'Select next copilot', silent = true })
 
--- Diags move
-vim.keymap.set('n', '<C-,>', '<cmd>Lspsaga diagnostic_jump_next<CR>', opts)
-vim.keymap.set('n', '<C-m>', '<cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
+-- Map for <C-y> in insert and command modes
+map({ 'i', 'c' }, '<C-y>', function()
+  -- Accept the Copilot suggestion
+  require('copilot.suggestion').accept()
+end, { noremap = true, desc = 'Close cmp and accept copilot', silent = true })
 
--- Save on C-s
-vim.keymap.set({ 'i', 'n', 'v' }, '<C-s>', '<cmd>:w<cr><esc>', opts)
+map({ 'i', 'c' }, '<C-p>', function()
+  require('copilot.suggestion').prev()
+end, { noremap = true, desc = 'Select previous copilot', silent = true })
 
--- quit
-vim.keymap.set('n', '<leader>qq', '<cmd>qa<cr>', opts)
+map({ 'n' }, '<leader>X', function()
+  vim.cmd ':TSC' -- Run the TypeScript compiler
+end, { noremap = true, silent = true, desc = 'Run tsc ' })
 
--- D J T C
-vim.keymap.set('n', '<Tab>', '<cmd>BufferLineCycleNext<cr>', opts)
--- vim.keymap.set('n', '<C-1>', '<cmd>BufferLineGroupToggle Json<cr>', opts)
--- vim.keymap.set('n', '<C-2>', '<cmd>BufferLineGroupToggle Dot<cr>', opts)
--- vim.keymap.set('n', '<C-1>', '<cmd>BufferLineGroupToggle Tests<cr>', opts)
--- vim.keymap.set('n', '<C-4>', '<cmd>BufferLineGroupToggle Config<cr>', opts)
+map({ 'n' }, '<leader>x', function()
+  Snacks.picker.diagnostics()
+end, { noremap = true, silent = true, desc = 'Show diagnostics' })
 
-vim.keymap.set('n', '<leader>xz', '<cmd>:DiagWindowShow<cr>', { desc = 'New diags', noremap = true, silent = true })
+map('n', '<leader>sa', function()
+  Snacks.picker.pickers()
+end, { desc = 'get all pickers' })
+
+map('n', '<C-a>', 'ggVG', { noremap = true, silent = true, desc = 'Select all' })
+
+map('n', '<C-n>', function()
+  Snacks.notifier.show_history()
+end, { desc = 'Notifications history' })
+
+map('n', '<leader>sl', '<CMD>SessionSearch<CR>', { desc = 'Session lens' })
+map('n', '<leader>sr', '<CMD>SessionRestore<CR>', { desc = 'Session restore' })
+
+-- TS handlers
+map('n', '<leader>tu', '<cmd>TSToolsRemoveUnusedImports<CR>', { desc = '[i] Remove unused imports' })
+map('n', '<leader>tv', '<cmd>TSToolsRemoveUnused<CR>', { desc = '[v] Remove unused variables' })
+map('n', '<leader>ti', '<cmd>TSToolsAddMissingImports<CR>', { desc = '[m] Add missing imports' })
+map('n', '<leader>tr', '<cmd>TSToolsRenameFile<CR>', { desc = '[r] Rename file' })

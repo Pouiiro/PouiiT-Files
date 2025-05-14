@@ -2,8 +2,8 @@
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
--- Make line numbers default
 
+-- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
@@ -16,9 +16,12 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+vim.schedule(function()
+  vim.opt.clipboard = 'unnamedplus'
+end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -37,7 +40,6 @@ vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
--- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
@@ -59,48 +61,17 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- vim: ts=2 sts=2 sw=2 et
--- tabs & indentation
-vim.opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
-vim.opt.shiftwidth = 2 -- 2 spaces for indent width
-vim.opt.expandtab = true -- expand tab to spaces
-vim.opt.autoindent = true -- copy indent from current line when starting new one
-vim.opt.wrap = true
-vim.opt.swapfile = false
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+-- instead raise a dialog asking if you wish to save the current file(s)
+-- See `:help 'confirm'`
+vim.opt.confirm = true
 
-vim.diagnostic.config { virtual_text = false, virtual_lines = { only_current_line = true } }
-
-vim.api.nvim_create_autocmd('BufEnter', {
-  callback = function()
-    if vim.bo.filetype == 'NvimTree' then
-      vim.wo.statuscolumn = ''
-    end
-  end,
-})
-
-vim.o.laststatus = 3
-vim.o.statusline = vim.o.tabline
-
-vim.o.showtabline = 0
-
-local function manage_copilot()
-  local file_path = vim.fn.expand '%:p'
-  -- Check if the file path contains 'myApp' directory anywhere in the path
-  if string.find(file_path, '/ac-cloud/', 1, true) then
-    if vim.fn.exists ':Copilot' == 2 then -- Check if the Copilot command exists
-      vim.cmd 'Copilot enable'
-    end
-  else
-    if vim.fn.exists ':Copilot' == 2 then -- Check if the Copilot command exists
-      vim.cmd 'Copilot disable'
-    end
-  end
-end
-
--- Enable Copilot for specific directory
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter', 'InsertLeave', 'WinEnter' }, {
-  pattern = '*',
-  callback = manage_copilot,
-})
+vim.o.termguicolors = true
+vim.cmd 'syntax on'
+vim.cmd 'hi Normal ctermbg=NONE'
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+-- vim.o.fillchars = [[eob: ,fold: ,foldopen:▾,foldsep: ,foldclose:▸]]
+vim.o.foldenable = true

@@ -13,14 +13,8 @@ result
 # Ignore Nix build artifacts
 .result
 .build/
-.nix-cache/
-.nix-gcroots/
-.nix/
 
 # Ignore Home Manager state (if applicable)
 .hmstate
 
-# Optional: Ignore cache and unnecessary files
-.cache/
-.nix-store-cache/
 

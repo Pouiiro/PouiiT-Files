@@ -1,0 +1,47 @@
+general.import = ["./tokyo-night.toml", "./alacritty.window.toml"]
+
+[colors]
+draw_bold_text_with_bright_colors = true
+transparent_background_colors = true
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 14.0
+normal =  {family = "JetBrainsMono Nerd Font", style="SemiBold"}
+bold = {family = "JetBrainsMono Nerd Font", style="ExtraBold"}
+italic = {family = "JetBrainsMono Nerd Font", style="SemiBoldItalic"}
+bold_italic = {family = "JetBrainsMono Nerd Font", style="ExtraBoldItalic"}
+offset = {x = 0, y = 0}
+
+[cursor.style]
+# shape = "Underline"
+blinking = "Always"
+
+[cursor]
+blink_interval = 400
+unfocused_hollow = false
+
+# For windows + wsl
+[terminal]
+osc52 = "CopyPaste"
+shell = { program = "wsl", args = ["--cd ~"]}
+
+[keyboard]
+bindings = [
+  { key = "C", mods = "Control", action = "Copy" },
+  { key = "V", mods = "Control", action = "Paste" },
+  { key = "C", mods = "Control|Shift", chars = "\u0003" },
+  { key = "Key0", mods = "Control", chars = "\u001b[48;5u" },
+  { key = "Key1", mods = "Control", chars = "\u001b[49;5u" },
+  { key = "Key2", mods = "Control", chars = "\u001b[50;5u" },
+  { key = "Key3", mods = "Control", chars = "\u001b[51;5u" },
+  { key = "Key4", mods = "Control", chars = "\u001b[52;5u" },
+  { key = "Key5", mods = "Control", chars = "\u001b[53;5u" },
+  { key = "Key6", mods = "Control", chars = "\u001b[54;5u" },
+  { key = "Key7", mods = "Control", chars = "\u001b[55;5u" },
+  { key = "Key8", mods = "Control", chars = "\u001b[56;5u" },
+  { key = "Key9", mods = "Control", chars = "\u001b[57;5u" }
+]
+

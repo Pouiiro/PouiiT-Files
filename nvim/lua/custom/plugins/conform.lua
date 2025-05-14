@@ -1,75 +1,52 @@
 return {
-  {
+  { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>ff',
+        '<leader>f',
         function()
-          require('conform').format { async = true, lsp_fallback = true }
+          require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
         desc = '[F]ormat buffer',
       },
-      {
-        '<leader>ci',
-        '<cmd>TSToolsRemoveUnusedImports<cr>',
-        -- function()
-        --   local bufnr = vim.api.nvim_get_current_buf()
-        --   require("typescript-tools")
-        --   require('vtsls').commands['remove_unused_imports'](bufnr)
-        --   save_buffer_after_delay(100)
-        -- end,
-        mode = '',
-        desc = '[i] Remove unused imports',
-      },
-      {
-        '<leader>cv',
-        '<cmd>TSToolsRemoveUnused<cr>',
-        -- function()
-        --   local bufnr = vim.api.nvim_get_current_buf()
-        --   require('vtsls').commands['remove_unused'](bufnr)
-        --   save_buffer_after_delay(100)
-        -- end,
-        mode = '',
-        desc = '[v] Remove unused variables',
-      },
-      {
-        '<leader>cm',
-        '<cmd>TSToolsAddMissingImports<cr>',
-        -- function()
-        --   local bufnr = vim.api.nvim_get_current_buf()
-        --   require('vtsls').commands['add_missing_imports'](bufnr)
-        --   save_buffer_after_delay(100)
-        -- end,
-        mode = '',
-        desc = '[m] Add missing imports',
-      },
     },
     opts = {
+      notify_on_error = false,
       format_on_save = function(bufnr)
+        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- have a well standardized coding style. You can add additional
+        -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          return nil
+        else
+          return {
+            timeout_ms = 500,
+            lsp_format = 'fallback',
+          }
+        end
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { 'prettierd', stop_after_first = true },
-        typescript = { 'prettierd', stop_after_first = true },
-        javascriptreact = { 'prettierd', stop_after_first = true },
-        typescriptreact = { 'prettierd', stop_after_first = true },
-        css = { 'prettierd', stop_after_first = true },
-        html = { 'prettierd', stop_after_first = true },
-        json = { 'prettierd', stop_after_first = true },
-        yaml = { 'prettierd', stop_after_first = true },
-        markdown = { 'prettierd', stop_after_first = true },
-        graphql = { 'prettierd', stop_after_first = true },
-        nix = { 'alejandra' },
+        -- You can use 'stop_after_first' to run the first available formatter from the list
+        javascript = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        json = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        css = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        yaml = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        graphql = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        html = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        jsonc = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        markdown = { 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        bash = { 'shfmt', 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        sh = { 'shfmt', 'prettierd', 'prettier', 'biome-check', 'biome', stop_after_first = true },
+        cucumber = { 'reformat-gherkin' },
       },
     },
   },
 }
--- vim: ts=2 sts=2 sw=2 et
