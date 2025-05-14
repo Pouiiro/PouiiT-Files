@@ -1,4 +1,4 @@
-# 🦄 Pouiiro's Web Dev Dotfiles
+# ☕ Pouiiro's Web Dev Dotfiles
 
 A modern, batteries-included Neovim configuration for web development, paired with a beautiful [Alacritty](https://github.com/alacritty/alacritty) terminal setup.
 
@@ -79,7 +79,6 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 
 | Keymap            | Action                           |
 | ----------------- | -------------------------------- |
-| `<leader>q`       | Open diagnostic quickfix list    |
 | `<C-x>`           | Show diagnostics float           |
 | `<C-f>`           | Code actions (LSP)               |
 | `<C-h>`           | Hover docs (LSP)                 |
@@ -88,10 +87,9 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 | `<leader>e`       | Toggle file explorer (NvimTree)  |
 | `<leader>f`       | Format buffer                    |
 | `<leader>cc...`   | Copilot Chat actions (see below) |
-| `<leader>s`       | Flash jump (search/jump)         |
-| `<leader>S`       | Flash Treesitter jump            |
-| `<leader>sn`      | Snacks: next/prev surround       |
-| `<leader>sa`      | Snacks: add surround             |
+| `s`               | Flash jump (search/jump)         |
+| `S`               | Flash Treesitter jump            |
+| `<leader>sa`      | Snacks: all pickers              |
 
 ### 🤖 Copilot Chat
 
@@ -123,10 +121,6 @@ A modern, batteries-included Neovim configuration for web development, paired wi
   `<leader>S` then select node
 - **Toggle file explorer (NvimTree):**  
   `<leader>e`
-- **Add surround (Snacks):**  
-  `<leader>sa` then choose surround
-- **Move to next/prev surround (Snacks):**  
-  `<leader>sn`
 
 ---
 
@@ -170,8 +164,6 @@ Feel free to fork and adapt for your own workflow! PRs and suggestions welcome.
 
 - [Neovim Docs](https://neovim.io/doc/)
 - [Alacritty Wiki](https://github.com/alacritty/alacritty/wiki)
-
----
 
 ---
 
