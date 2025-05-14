@@ -12,16 +12,16 @@ A modern, batteries-included Neovim configuration for web development, paired wi
   [Install Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - **Node.js (v18+)**  
   [Install Node.js](https://nodejs.org/en/download/)
-- **Go** (for some plugins)  
-  [Install Go](https://go.dev/doc/install)
+- **Rust nightly** (for some plugins)  
+  [Install Rust](https://rustup.rs/)
 - **Nerd Font** (e.g. [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads))
 - **Alacritty Terminal**  
   [Install Alacritty](https://github.com/alacritty/alacritty#installation)
-- **Optional:** [Ripgrep](https://github.com/BurntSushi/ripgrep), [fd](https://github.com/sharkdp/fd), [fzf](https://github.com/junegunn/fzf)
+- **Optional:** [Ripgrep](https://github.com/BurntSushi/ripgrep), [fd](https://github.com/sharkdp/fd), [fzf](https://github.com/junegunn/fzf), [lazygit](https://github.com/jesseduffield/lazygit)
 
 ### 🪟 Windows
 
-- Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for best experience.
+- Use [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) for best experience.
 - Install [Nerd Font](https://www.nerdfonts.com/font-downloads) and set it in Alacritty.
 
 ### 🍏 macOS / 🐧 Linux
@@ -29,7 +29,11 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 - Use your package manager for all dependencies.
 - Example for Homebrew (macOS):
   ```sh
-  brew install neovim node go alacritty ripgrep fd fzf
+  brew install neovim node alacritty ripgrep fd fzf lazygit
+  ```
+- Follow instructions, make sure to install Nightly
+  ```sh
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
   ```
 
 ---
@@ -39,7 +43,7 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 1. **Clone this repo:**
 
    ```sh
-   git clone https://github.com/yourusername/your-dotfiles.git ~/.config
+   git clone https://github.com/Pouiiro/PouiiT-Files ~/.config
    ```
 
 2. **Symlink or copy the configs:**
@@ -165,9 +169,25 @@ Feel free to fork and adapt for your own workflow! PRs and suggestions welcome.
 ## 📚 Resources
 
 - [Neovim Docs](https://neovim.io/doc/)
-- [Awesome Neovim](https://github.com/rockerBOO/awesome-neovim)
 - [Alacritty Wiki](https://github.com/alacritty/alacritty/wiki)
 
 ---
 
-**Happy hacking!** 🚀
+---
+
+## 🧩 Extras
+
+### 🍏 macOS: Karabiner Elements
+
+- Use [Karabiner Elements](https://karabiner-elements.pqrs.org/) to remap your CapsLock key:
+  - **CapsLock** → **Esc** (when pressed alone)
+  - **CapsLock** → **Ctrl** (when held with another key)
+  - **CapsLock** → **CapsLock** (when pressed with Shift)
+- The config is included: [`karabiner/karabiner.json`](karabiner/karabiner.json)
+
+### 🪟 Windows: AutoHotkey
+
+- Use [AutoHotkey](https://www.autohotkey.com/) to get similar keybindings.
+- Script included: [`autohotkey/nvim_bindings.ahk`](autohotkey/nvim_bindings.ahk)
+
+---
