@@ -221,7 +221,7 @@ return {
     -- Add your own paths to the public_paths table to customize the behavior.
     local enabledDirs = {
       '~/.config/nvim',
-      '~/development',
+      '~/dev',
     }
 
     return IsCodePublic(cwd, enabledDirs)
