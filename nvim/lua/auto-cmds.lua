@@ -58,6 +58,12 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    vim.cmd 'ShowkeysToggle'
+  end,
+})
+
 -- vim.api.nvim_create_autocmd('LspAttach', {
 --   group = vim.api.nvim_create_augroup('lsp_buf_conf', { clear = true }),
 --   callback = function(event_context)

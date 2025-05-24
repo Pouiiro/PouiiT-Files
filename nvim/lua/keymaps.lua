@@ -14,7 +14,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -116,3 +116,38 @@ map('n', '<leader>tu', '<cmd>TSToolsRemoveUnusedImports<CR>', { desc = '[i] Remo
 map('n', '<leader>tv', '<cmd>TSToolsRemoveUnused<CR>', { desc = '[v] Remove unused variables' })
 map('n', '<leader>ti', '<cmd>TSToolsAddMissingImports<CR>', { desc = '[m] Add missing imports' })
 map('n', '<leader>tr', '<cmd>TSToolsRenameFile<CR>', { desc = '[r] Rename file' })
+
+-- Movement in insert mode
+map('i', '<C-e>', '<C-o>A')
+map('i', '<C-i>', '<C-o>I')
+
+-- Resize window
+map('n', "<C-'>", '<C-w><')
+map('n', '<C-ö>', '<C-w>>')
+map('n', '<C-ä>', '<C-w>+')
+map('n', '<C-å>', '<C-w>-')
+
+-- Toggle term
+map('n', '<leader>hh', ':TermNew size=20 direction=horizontal<cr>', { desc = 'Toggle horizontal terminal', silent = true })
+map('n', '<leader>vv', ':TermNew size=60 direction=vertical<cr>', { desc = 'Toggle vertical terminal', silent = true })
+map('n', '<C-b>', '<cmd>lua main_term_toggle()<cr>', { desc = 'Toggle floating terminal', silent = true })
+map('n', '<leader>st', '<cmd>TermSelect<cr>', { desc = 'Open terminal selector', silent = true, noremap = true })
+
+-- Menu
+-- Keyboard users
+vim.keymap.set('n', '<C-.>', function()
+  require('menu').open 'default'
+end, {})
+
+-- mouse users + nvimtree users!
+vim.keymap.set({ 'n', 'v' }, '<RightMouse>', function()
+  require('menu.utils').delete_old_menus()
+
+  vim.cmd.exec '"normal! \\<RightMouse>"'
+
+  -- clicked buf
+  local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
+  local options = vim.bo[buf].ft == 'NvimTree' and 'nvimtree' or 'default'
+
+  require('menu').open(options, { mouse = true })
+end, {})

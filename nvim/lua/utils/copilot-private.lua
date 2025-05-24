@@ -9,6 +9,8 @@ local function is_code_public()
   local public_paths = {
     '~/.config/nvim',
     '~/dev',
+    '**/nvim/**',
+    '~/dotfiles',
   }
 
   for _, public_path in ipairs(public_paths) do

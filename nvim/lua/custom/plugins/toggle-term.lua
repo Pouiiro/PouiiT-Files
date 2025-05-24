@@ -1,6 +1,5 @@
 return {
   'akinsho/toggleterm.nvim',
-  version = '*',
   event = 'VeryLazy',
   config = function()
     -- custom setup
@@ -70,7 +69,8 @@ return {
     -- global: attach general key shortcuts
     function _G.set_terminal_keymaps()
       local opts = { buffer = 0 }
-      vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+      vim.keymap.set('t', '<esc><esc>', [[<C-\><C-n>]], opts)
+      vim.keymap.set('t', '<C-b>', [[<C-\><C-n><C-b>]], opts)
     end
 
     -- set global toggleterm keymaps

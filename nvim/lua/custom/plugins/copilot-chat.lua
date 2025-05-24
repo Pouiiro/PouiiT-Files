@@ -222,6 +222,8 @@ return {
     local enabledDirs = {
       '~/.config/nvim',
       '~/dev',
+      '**/nvim/**',
+      '~/dotfiles',
     }
 
     return IsCodePublic(cwd, enabledDirs)

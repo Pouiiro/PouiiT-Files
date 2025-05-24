@@ -38,6 +38,22 @@ return {
           bold = true,
           italic = false,
         },
+        fill = {
+          fg = '#ff0000',
+          bg = '#000000',
+        },
+        background = {
+          fg = '#aeaeae',
+          bg = '#000000',
+        },
+        -- tab = {
+        --   fg = '<colour-value-here>',
+        --   bg = '<colour-value-here>',
+        -- },
+        -- tab_selected = {
+        --   fg = '<colour-value-here>',
+        --   bg = '<colour-value-here>',
+        -- },
       },
     }
   end,
