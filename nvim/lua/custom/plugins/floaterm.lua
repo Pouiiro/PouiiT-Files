@@ -1,6 +1,7 @@
 return {
   'voldikss/vim-floaterm',
   lazy = false,
+  enabled = false, -- using toggle term
   config = function()
     vim.g.floaterm_shell = 'zsh'
     vim.g.floaterm_titleposition = 'center'

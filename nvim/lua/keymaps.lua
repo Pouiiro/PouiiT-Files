@@ -1,12 +1,10 @@
+local map = vim.keymap.set
 -- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
+--  See `:help map()`
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -14,35 +12,21 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
--- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+-- map('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+-- map('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+-- map('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+-- map('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- map('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- map('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -51,16 +35,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-local map = vim.keymap.set
-
 map('n', '<C-s>', '<cmd>w<cr>', { desc = 'Save' })
 map('i', '<C-s>', '<cmd>w<cr><ESC>', { desc = 'Save' })
 
-vim.api.nvim_set_keymap('i', '<C-e>', '<Esc>A', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '<C-i>', '<Esc>^i', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>qall!<cr>', { noremap = true, silent = true, desc = 'Quit' })
+map('n', '<leader>q', '<cmd>qall!<cr>', { noremap = true, silent = true, desc = 'Quit' })
 
-vim.api.nvim_set_keymap('x', 'p', [["_dP]], { noremap = true, silent = true })
+map('x', 'p', [["_dP]], { noremap = true, silent = true })
 
 -- Buffer shit (tabs)
 map('n', '<Tab>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true, desc = 'next buffer' })
@@ -83,6 +63,13 @@ end, { noremap = true, desc = 'Select next copilot', silent = true })
 -- Map for <C-y> in insert and command modes
 map({ 'i', 'c' }, '<C-y>', function()
   -- Accept the Copilot suggestion
+  local cmp = require 'cmp'
+
+  -- Check if cmp is active
+  if cmp.visible() then
+    cmp.close()
+  end
+
   require('copilot.suggestion').accept()
 end, { noremap = true, desc = 'Close cmp and accept copilot', silent = true })
 
@@ -102,8 +89,6 @@ map('n', '<leader>sa', function()
   Snacks.picker.pickers()
 end, { desc = 'get all pickers' })
 
-map('n', '<C-a>', 'ggVG', { noremap = true, silent = true, desc = 'Select all' })
-
 map('n', '<C-n>', function()
   Snacks.notifier.show_history()
 end, { desc = 'Notifications history' })
@@ -117,15 +102,23 @@ map('n', '<leader>tv', '<cmd>TSToolsRemoveUnused<CR>', { desc = '[v] Remove unus
 map('n', '<leader>ti', '<cmd>TSToolsAddMissingImports<CR>', { desc = '[m] Add missing imports' })
 map('n', '<leader>tr', '<cmd>TSToolsRenameFile<CR>', { desc = '[r] Rename file' })
 
--- Movement in insert mode
-map('i', '<C-e>', '<C-o>A')
-map('i', '<C-i>', '<C-o>I')
-
 -- Resize window
 map('n', "<C-'>", '<C-w><')
 map('n', '<C-ö>', '<C-w>>')
 map('n', '<C-ä>', '<C-w>+')
 map('n', '<C-å>', '<C-w>-')
+
+-- Movement in insert mode
+map('i', '<C-e>', '<C-o>A')
+map('i', '<C-i>', '<C-o>I')
+
+-- Select All
+vim.keymap.set({ 'n', 'v' }, '<C-a>', '<cmd>normal! ggVG<CR>', { noremap = true, silent = true, desc = 'Select all' })
+
+-- Split window
+map('n', 'ss', ':split<Return>')
+map('n', 'sv', ':vsplit<Return>')
+map('n', 'sc', '<C-w>q')
 
 -- Toggle term
 map('n', '<leader>hh', ':TermNew size=20 direction=horizontal<cr>', { desc = 'Toggle horizontal terminal', silent = true })
@@ -135,12 +128,12 @@ map('n', '<leader>st', '<cmd>TermSelect<cr>', { desc = 'Open terminal selector',
 
 -- Menu
 -- Keyboard users
-vim.keymap.set('n', '<C-.>', function()
+map('n', '<C-.>', function()
   require('menu').open 'default'
-end, {})
+end, { desc = 'Open menu with keyboard', noremap = true, silent = true })
 
 -- mouse users + nvimtree users!
-vim.keymap.set({ 'n', 'v' }, '<RightMouse>', function()
+map({ 'n', 'v' }, '<RightMouse>', function()
   require('menu.utils').delete_old_menus()
 
   vim.cmd.exec '"normal! \\<RightMouse>"'
