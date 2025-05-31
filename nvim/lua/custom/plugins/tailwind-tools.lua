@@ -16,5 +16,10 @@ return {
         javascript = { 'clsx%(([^)]+)%)' },
       },
     },
-  }, -- your configuration
+    keymaps = {
+      smart_increment = { -- increment tailwindcss units using <C-a> and <C-x>
+        enabled = false,
+      },
+    },
+  },
 }

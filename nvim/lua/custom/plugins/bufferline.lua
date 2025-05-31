@@ -9,10 +9,11 @@ return {
         themable = true,
         indicator = {
           icon = '',
-          style = 'icon',
+          style = 'none',
         },
         diagnostics = 'nvim_lsp',
-        separator_style = { '', '' },
+        separator_style = 'slope',
+        separator = 'slope',
         offsets = {
           {
             filetype = 'NvimTree',
@@ -33,27 +34,19 @@ return {
         },
       },
       highlights = {
-        buffer_selected = {
-          fg = '#9f5fdf',
-          bold = true,
-          italic = false,
-        },
         fill = {
-          fg = '#ff0000',
+          fg = '#000000',
           bg = '#000000',
         },
-        background = {
-          fg = '#aeaeae',
-          bg = '#000000',
+        separator_selected = {
+          fg = '#000000',
         },
-        -- tab = {
-        --   fg = '<colour-value-here>',
-        --   bg = '<colour-value-here>',
-        -- },
-        -- tab_selected = {
-        --   fg = '<colour-value-here>',
-        --   bg = '<colour-value-here>',
-        -- },
+        separator = {
+          fg = '#000000',
+        },
+        separator_visible = {
+          fg = '#000000',
+        },
       },
     }
   end,

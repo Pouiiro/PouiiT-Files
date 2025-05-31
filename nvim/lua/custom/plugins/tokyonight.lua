@@ -51,6 +51,8 @@ return {
       hl.FlashLabel = { fg = '#FF0000', bold = true, italic = true, bg = '#1E3A8A' }
       hl.FlashMatch = { bg = 'NONE', fg = c.purple }
       hl.FlashCurrent = { bg = 'NONE', fg = c.purple }
+      hl.VerticalSplit = { fg = c.purple, bg = 'NONE' }
+      hl.WinSeparator = { fg = c.purple, bg = 'NONE' }
     end,
   },
   config = function(_, opts)

@@ -56,6 +56,17 @@ return {
       end,
     }
 
+    -- numbered terminals (1-5)
+    local numbered_terms = {}
+    for i = 1, 5 do
+      numbered_terms[i] = Terminal:new {
+        display_name = string.format('  TERMINAL %d ', i),
+        on_open = function()
+          vim.cmd [[ startinsert! ]]
+        end,
+      }
+    end
+
     -- global: main term toggle
     function _G.main_term_toggle()
       main_term:toggle()
@@ -66,14 +77,29 @@ return {
       secondary_term:toggle()
     end
 
+    -- global: toggle numbered terminals with <C-1> ... <C-5>
+    for i = 1, 5 do
+      _G['numbered_term_toggle_' .. i] = function()
+        numbered_terms[i]:toggle()
+      end
+    end
+
     -- global: attach general key shortcuts
     function _G.set_terminal_keymaps()
       local opts = { buffer = 0 }
       vim.keymap.set('t', '<esc><esc>', [[<C-\><C-n>]], opts)
-      vim.keymap.set('t', '<C-b>', [[<C-\><C-n><C-b>]], opts)
+      vim.keymap.set('t', '<C-b>', function()
+        main_term_toggle()
+      end, opts)
     end
 
     -- set global toggleterm keymaps
     vim.cmd [[ autocmd! TermOpen term://* lua set_terminal_keymaps() ]]
+    -- keymaps for <C-1> ... <C-5> in normal mode
+    for i = 1, 5 do
+      vim.keymap.set({ 't', 'n' }, '<C-' .. i .. '>', function()
+        _G['numbered_term_toggle_' .. i]()
+      end, { noremap = true, silent = true })
+    end
   end,
 }
