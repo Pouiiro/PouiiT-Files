@@ -219,12 +219,7 @@ return {
   cond = function()
     local cwd = vim.fn.getcwd()
     -- Add your own paths to the public_paths table to customize the behavior.
-    local enabledDirs = {
-      '~/.config/nvim',
-      '~/dev',
-      '**/nvim/**',
-      '~/dotfiles',
-    }
+    local enabledDirs = require 'utils.copilot-folders'
 
     return IsCodePublic(cwd, enabledDirs)
   end,

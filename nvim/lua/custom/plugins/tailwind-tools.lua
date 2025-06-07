@@ -3,6 +3,7 @@ return {
   'luckasRanarison/tailwind-tools.nvim',
   name = 'tailwind-tools',
   build = ':UpdateRemotePlugins',
+  enabled = require('utils.tailwind').has_tailwind(),
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-telescope/telescope.nvim', -- optional

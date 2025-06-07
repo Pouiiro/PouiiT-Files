@@ -11,9 +11,14 @@ return {
         client.server_capabilities.documentRangeFormattingProvider = false
       end,
       settings = {
-        code_lens = 'all',
-        publish_diagnostic_on = 'change',
-        expose_as_code_action = 'all',
+        code_lens = nil,
+        separate_diagnostic_server = true,
+        -- "change"|"insert_leave" determine when the client asks the server about diagnostic
+        publish_diagnostic_on = 'insert_leave',
+        -- array of strings("fix_all"|"add_missing_imports"|"remove_unused"|
+        -- "remove_unused_imports"|"organize_imports") -- or string "all"
+        -- to include all supported code actions
+        expose_as_code_action = { 'add_missing_imports', 'remove_unused', 'remove_unused_imports' },
         tsserver_file_preferences = {
           includeCompletionsWithSnippetText = true,
           includeAutomaticOptionalChainCompletions = true,
@@ -32,7 +37,6 @@ return {
           displayPartsForJSDoc = true,
           generateReturnInDocTemplate = true,
         },
-        separate_diagnostic_server = true,
         jsx_close_tag = {
           enable = false,
         },

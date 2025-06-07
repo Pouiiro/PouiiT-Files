@@ -6,12 +6,7 @@ M = {}
 -- Add your own paths to the public_paths table to customize the behavior.
 
 local function is_code_public()
-  local public_paths = {
-    '~/.config/nvim',
-    '~/dev',
-    '**/nvim/**',
-    '~/dotfiles',
-  }
+  local public_paths = require 'utils.copilot-folders'
 
   for _, public_path in ipairs(public_paths) do
     local expanded_public_path = vim.fn.expand(public_path) -- Expand the tilde
