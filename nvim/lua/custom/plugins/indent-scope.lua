@@ -1,6 +1,6 @@
 -- indent char from settings
 local settings = {
-  theme = 'tokyonight', -- ayu|gruvbox|neofusion
+  theme = 'catppucin', -- ayu|gruvbox|neofusion
   indentChar = '│', -- │, |, ¦, ┆, ┊
   separatorChar = '-', -- ─, -, .
   aspect = 'clean', -- normal|clean
