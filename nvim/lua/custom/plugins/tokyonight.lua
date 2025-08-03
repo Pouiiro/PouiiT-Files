@@ -53,12 +53,10 @@ return {
       hl.FlashCurrent = { bg = 'NONE', fg = c.purple }
       hl.VerticalSplit = { fg = c.purple, bg = 'NONE' }
       hl.WinSeparator = { fg = c.purple, bg = 'NONE' }
-      hl.BufferLineGroupLabel = { bg = 'NONE' }
     end,
   },
   config = function(_, opts)
     require('tokyonight').setup(opts)
-
-    vim.cmd.colorscheme 'tokyonight'
+    -- vim.cmd.colorscheme 'tokyonight'
   end,
 }

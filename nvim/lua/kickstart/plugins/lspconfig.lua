@@ -137,8 +137,8 @@ return {
             lspconfig[server_name].setup(server_opts)
             mark_server_started(server_name, root_dir)
 
-            -- REMOVE THIS LINE:
-            -- lspconfig[server_name].manager.try_add(bufnr)
+            -- Try to attach to current buffer immediately
+            lspconfig[server_name].manager.try_add(bufnr)
           end
         end
       end

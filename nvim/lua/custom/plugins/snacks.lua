@@ -126,7 +126,7 @@ return {
         },
         projects = {
           -- add your own projects here in y ou wanna explicitly set them
-          -- projects = { '~/development' },
+          projects = { '~/development' },
           patterns = { '.git', '_darcs', '.hg', '.bzr', '.svn', 'package.json', 'Makefile' },
         },
       },

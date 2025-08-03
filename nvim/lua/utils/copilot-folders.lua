@@ -1,3 +1,3 @@
-local M = { '~/.config/nvim', '~/dotfiles' }
+local M = { '~/.config/nvim', '~/dev', '~/dotfiles' }
 
 return M
