@@ -5,16 +5,7 @@ M = {}
 -- It also provides a function to toggle Copilot on and off.
 -- Add your own paths to the public_paths table to customize the behavior.
 
-local public_paths = { "~/.config", "~/dotfiles" }
-local env_paths = vim.fn.getenv("NVIM_AI_ALLOWED_PATHS")
--- export NVIM_AI_ALLOWED_PATHS="~/extra/path1,~/extra/path2"
-vim.notify("AI allowed paths: " .. tostring(env_paths), vim.log.levels.INFO, { title = "Copilot Private" })
-if env_paths and env_paths ~= "" then
-  local env_paths_str = tostring(env_paths)
-  for path in string.gmatch(env_paths_str, "([^,]+)") do
-    table.insert(public_paths, path)
-  end
-end
+local public_paths = { '~/.config' }
 
 local function is_code_public()
   for _, public_path in ipairs(public_paths) do
@@ -38,10 +29,10 @@ end
 
 local function is_copilot_available()
   if is_ai_enabled() then
-    if vim.fn.executable("node") == 1 then
+    if vim.fn.executable 'node' == 1 then
       return true
     else
-      vim.notify("Node is not available, but required for Copilot.", vim.log.levels.WARN)
+      vim.notify('Node is not available, but required for Copilot.', vim.log.levels.WARN)
       return false
     end
   end
@@ -50,15 +41,15 @@ end
 
 local function toggle_copilot()
   if is_copilot_available() then
-    local output = vim.fn.execute("Copilot status")
-    if string.match(output, "Not Started") or string.match(output, "Offline") then
+    local output = vim.fn.execute 'Copilot status'
+    if string.match(output, 'Not Started') or string.match(output, 'Offline') then
       -- avoid starting multiple servers
-      vim.cmd("Copilot enable")
-      vim.g.custom_copilot_status = "enabled"
+      vim.cmd 'Copilot enable'
+      vim.g.custom_copilot_status = 'enabled'
     end
   else
-    vim.cmd("Copilot disable")
-    vim.g.custom_copilot_status = "disabled"
+    vim.cmd 'Copilot disable'
+    vim.g.custom_copilot_status = 'disabled'
   end
 end
 

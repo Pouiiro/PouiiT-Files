@@ -1,6 +1,6 @@
 # ☕ Pouiiro's Web Dev Dotfiles
 
-A modern, batteries-included Neovim configuration for web development, paired with a beautiful [Alacritty](https://github.com/alacritty/alacritty) terminal setup.
+Modern, batteries-included Neovim configuration for web development, paired with a beautiful [Kitty](https://sw.kovidgoyal.net/kitty/) terminal setup and macOS window management tools.
 
 > **✨ Fast, modular, and designed for productivity!**
 
@@ -15,8 +15,9 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 - **Rust nightly** (for some plugins)  
   [Install Rust](https://rustup.rs/)
 - **Nerd Font** (e.g. [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads))
-- **Alacritty Terminal**  
-  [Install Alacritty](https://github.com/alacritty/alacritty#installation)
+- **Kitty Terminal**  
+  [Install Kitty](https://sw.kovidgoyal.net/kitty/#installation)
+- **macOS:** [yabai](https://github.com/koekeishiya/yabai), [skhd](https://github.com/koekeishiya/skhd) for window management
 - **Optional:** [Ripgrep](https://github.com/BurntSushi/ripgrep), [fd](https://github.com/sharkdp/fd), [fzf](https://github.com/junegunn/fzf), [lazygit](https://github.com/jesseduffield/lazygit)
 
 ### 🪟 Windows
@@ -29,7 +30,7 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 - Use your package manager for all dependencies.
 - Example for Homebrew (macOS):
   ```sh
-  brew install neovim node alacritty ripgrep fd fzf lazygit
+  brew install neovim node kitty gh ripgrep fd fzf lazygit yabai skhd
   ```
 - Follow instructions, make sure to install Nightly
   ```sh
@@ -50,7 +51,7 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 
    ```sh
    ln -s ~/.config/nvim ~/.config/nvim
-   ln -s ~/.config/alacritty ~/.config/alacritty
+   ln -s ~/.config/kitty ~/.config/kitty
    ```
 
 3. **Install plugins:**
@@ -66,70 +67,148 @@ A modern, batteries-included Neovim configuration for web development, paired wi
 ## ✨ Features
 
 - ⚡ **LSP**: Autocompletion, diagnostics, code actions for JS/TS, HTML, CSS, GraphQL, Lua, etc.
-- 🧹 **Formatting & Linting**: Prettier, Biome, ESLint, shfmt, etc.
-- 🤖 **Copilot & Copilot Chat**: AI code suggestions and chat (with custom prompts).
-- 🎨 **UI**: Tokyo Night & Catppuccin themes, Noice, Lualine, Flash, Treesitter, NvimTree, etc.
+- 🧹 **Formatting & Linting**: Biome, Prettier, shfmt, etc.
+- 🤖 **Copilot & CodeCompanion**: AI code suggestions and chat (with custom prompts).
+- 🎨 **UI**: Tokyo Night, Catppuccin, NeoSolarized themes, Noice, Lualine, Flash, Treesitter, NvimTree, Snacks, etc.
 - 🌈 **Tailwind**: Color highlighting, folding, tools for Tailwind CSS.
 - 📝 **Markdown**: Live preview, enhanced rendering.
-- 🖥️ **Alacritty**: Transparent, themed, fast, with custom keybindings.
+- 🖥️ **Kitty**: Transparent, themed, fast, with custom keybindings.
+- 🍏 **macOS Window Management**: Yabai (tiling), skhd (hotkeys)
 
 ---
 
-## 🎹 Common Keymaps
 
-| Keymap            | Action                           |
-| ----------------- | -------------------------------- |
-| `<C-x>`           | Show diagnostics float           |
-| `<C-f>`           | Code actions (LSP)               |
-| `<C-h>`           | Hover docs (LSP)                 |
-| `<C-j>`           | Signature help (LSP)             |
-| `<Tab>`/`<S-Tab>` | Next/previous buffer             |
-| `<leader>e`       | Toggle file explorer (NvimTree)  |
-| `<leader>f`       | Format buffer                    |
-| `<leader>cc...`   | Copilot Chat actions (see below) |
-| `s`               | Flash jump (search/jump)         |
-| `S`               | Flash Treesitter jump            |
-| `<leader>sa`      | Snacks: all pickers              |
 
-### 🤖 Copilot Chat
+## 🎹 Custom Keymaps
 
-- `<leader>ccp` — Prompt actions
-- `<leader>cce` — Explain code
-- `<leader>cct` — Generate tests
-- `<leader>ccr` — Review code
-- `<leader>ccv` — Toggle Copilot Chat (vertical split)
-- `<leader>cci` — Ask Copilot (input)
-- `<leader>ccm` — Generate commit message
+All keymaps are defined in `nvim/lua/config/keymaps.lua` and grouped below for easy reference.
+
+### Buffer & Navigation
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<Tab>` / `<S-Tab>`   | Next/previous buffer                   |
+| `<C-b>`               | Show buffer picker (Snacks)            |
+| `<C-k>`               | Close buffer                           |
+| `<leader>sa`          | Snacks: all pickers                    |
+| `<leader>sf`          | Terminal selector                      |
+
+### Window Management
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `ss`                  | Horizontal split                       |
+| `sv`                  | Vertical split                         |
+| `sc`                  | Close split                            |
+| `<C-'>`               | Resize window left                     |
+| `<C-ö>`               | Resize window right                    |
+| `<C-ä>`               | Resize window up                       |
+| `<C-å>`               | Resize window down                     |
+
+### Editing & Selection
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<C-a>`               | Select all                             |
+| `<C-e>` (insert)      | Move to end of line in insert mode     |
+| `<C-i>` (insert)      | Move to start of line in insert mode   |
+
+### LSP & Diagnostics
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<C-x>`               | Show diagnostics float                 |
+| `<C-f>`               | Code actions (LSP)                     |
+| `<C-h>`               | Hover docs (LSP)                       |
+| `<C-j>`               | Signature help (LSP)                   |
+| `<C-,>`               | Go to next diagnostic                  |
+| `<C-m>`               | Go to previous diagnostic              |
+| `<C-vr>`              | Rename variable (LSP)                  |
+
+### AI & Copilot
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<C-n>` (insert)      | Next Copilot suggestion                |
+| `<C-y>` (insert/cmd)  | Accept Copilot suggestion              |
+| `<leader>ca`          | CodeCompanion chat/actions             |
+| `<leader>cA`          | CodeCompanion actions palette          |
+| `<leader>cc...`       | Copilot Chat actions (see below)       |
+
+### Snacks & Testing
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<leader>twf`         | Run Vitest watch (file)                |
+| `<leader>twr`         | Run Vitest watch (project)             |
+
+### TypeScript Tools
+| Keymap                | Action                                 |
+|-----------------------|----------------------------------------|
+| `<leader>tu`          | Remove unused imports                  |
+| `<leader>tv`          | Remove unused variables                |
+| `<leader>ti`          | Add missing imports                    |
+| `<leader>tr`          | Rename file                            |
+
+---
+
+## 🚀 Quick Start
+
+Clone and run the setup script to install everything:
+
+```sh
+git clone https://github.com/Pouiiro/PouiiT-Files ~/.config
+cd ~/.config
+chmod +x setup.sh
+./setup.sh
+```
+
+This will:
+- Install all dependencies (Neovim, Kitty, Node.js, etc.)
+- Symlink configs for Neovim, Kitty, yabai, skhd
+- Set up AI allowed directories
+- Guide you to set your terminal font
+
+Open Kitty and run `nvim` to start!
+
+### 🤖 CodeCompanion
+
+- `<leader>ca` — Open CodeCompanion chat/actions
+- `<leader>cA` — Open CodeCompanion actions palette
 
 ---
 
 ## 🧑‍💻 Usage Examples
 
-- **Run TypeScript compiler:**  
-  `:TSC` or `<leader>X`
 - **Show diagnostics:**  
   `<leader>x`
-- **Rename variable (LSP):**  
-  `<space>rn`
-- **Format file:**  
-  `<leader>f`
-- **Open Copilot Chat:**  
-  `<leader>ccv` or `<leader>ccp` for prompt actions
 - **Jump to any word/char (Flash):**  
-  `<leader>s` then type the target
+  `s` then type the target
 - **Jump to syntax node (Flash Treesitter):**  
-  `<leader>S` then select node
-- **Toggle file explorer (NvimTree):**  
+  `S` then select node
+- **Toggle file explorer:**  
   `<leader>e`
 
 ---
 
-## 🖥️ Alacritty
+## 🤖 AI Directory Control
 
-- Transparent background, Tokyo Night theme
+By default, AI features (Copilot, CodeCompanion) are only enabled in public or allowed directories. To customize where AI is available, set the environment variable `NVIM_AI_ALLOWED_PATHS`:
+
+```sh
+export NVIM_AI_ALLOWED_PATHS="~/dev,~/projects,~/dotfiles"
+```
+
+This variable should be a comma-separated list of absolute or `~`-epanded paths. Only files inside these directories will have AI features enabled. See `lua/utils/copilot-private.lua` for details.
+
+---
+
+## 🖥️ Kitty Terminal
+
+- Transparent background, Tokyo Night, Gruvbox, NeoSolarized, Kanagawa themes
 - Font: JetBrainsMono Nerd Font
 - Custom keybindings for copy/paste (Ctrl+C/V)
-- See `alacritty/alacritty.toml` and `alacritty/alacritty.window.toml` for details
+- See `kitty/*.conf` for details
+
+## 🍏 macOS Window Management
+
+- **Yabai**: Tiling window manager for macOS
+- **skhd**: Hotkey daemon for window management
+- See `yabai/yabairc` and `skhd/skhdrc` for configs
 
 ---
 
@@ -163,7 +242,7 @@ Feel free to fork and adapt for your own workflow! PRs and suggestions welcome.
 ## 📚 Resources
 
 - [Neovim Docs](https://neovim.io/doc/)
-- [Alacritty Wiki](https://github.com/alacritty/alacritty/wiki)
+- [Kitty Documentation](https://sw.kovidgoyal.net/kitty/)
 
 ---
 
