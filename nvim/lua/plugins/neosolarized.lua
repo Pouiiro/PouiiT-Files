@@ -25,7 +25,15 @@ return {
         highlights.Include.fg = colors.red -- Using `red` foreground for Includes
       end,
     })
-
     vim.cmd("colorscheme NeoSolarized")
+
+    local colors = require("NeoSolarized.colors").setup({ style = "dark" })
+
+    -- Diagnostics (using theme colors)
+    vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, sp = colors.red })
+    vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = colors.orange }) -- less bright than yellow
+    vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = colors.cyan })
+    vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = colors.green })
+    vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#211d3d" })
   end,
 }

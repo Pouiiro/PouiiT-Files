@@ -1,0 +1,16 @@
+font-family = JetBrains Mono
+
+theme = Catppuccin Mocha
+
+background-opacity = 0.8
+background-blur = true
+background = #000000
+
+window-title-font-family = Ubuntu NerdFont
+macos-titlebar-style = tabs
+font-thicken-strength = 50
+
+font-family = JetBrains Mono 
+font-size = 16
+font-style = Medium
+font-style-bold = Bold

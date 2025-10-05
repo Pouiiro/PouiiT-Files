@@ -46,18 +46,28 @@ if [ ! -d "$CONFIG_DIR/nvim" ]; then
 fi
 
 print_section "Symlinking configs"
-ln -sf "$CONFIG_DIR/nvim" "$CONFIG_DIR/nvim"
-ln -sf "$CONFIG_DIR/kitty" "$CONFIG_DIR/kitty"
+# Get current directory (repo root)
+REPO_ROOT="$(pwd)"
+
+# Symlink all folders and their contents from repo root to ~/.config
+for item in "$REPO_ROOT"/*; do
+  name=$(basename "$item")
+  # Skip .git and setup.sh
+  [[ "$name" == ".git" ]] && continue
+  [[ "$name" == "setup.sh" ]] && continue
+  # Symlink folder or file to ~/.config
+  ln -sf "$item" "$HOME/.config/$name"
+done
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  ln -sf "$CONFIG_DIR/yabai" "$CONFIG_DIR/yabai"
-  ln -sf "$CONFIG_DIR/skhd" "$CONFIG_DIR/skhd"
+  ln -sf "$REPO_ROOT/yabai" "$CONFIG_DIR/yabai"
+  ln -sf "$REPO_ROOT/skhd" "$CONFIG_DIR/skhd"
 fi
 
 print_section "Setting up AI allowed paths (optional)"
 if ! grep -q NVIM_AI_ALLOWED_PATHS ~/.bashrc 2>/dev/null && ! grep -q NVIM_AI_ALLOWED_PATHS ~/.zshrc 2>/dev/null; then
-  echo 'export NVIM_AI_ALLOWED_PATHS="$HOME/dev,$HOME/projects,$HOME/dotfiles"' >> ~/.bashrc
-  echo 'export NVIM_AI_ALLOWED_PATHS="$HOME/dev,$HOME/projects,$HOME/dotfiles"' >> ~/.zshrc
+  echo 'export NVIM_AI_ALLOWED_PATHS="$HOME/dev,$HOME/projects,$HOME/dotfiles"' >>~/.bashrc
+  echo 'export NVIM_AI_ALLOWED_PATHS="$HOME/dev,$HOME/projects,$HOME/dotfiles"' >>~/.zshrc
   echo "Added NVIM_AI_ALLOWED_PATHS to ~/.bashrc and ~/.zshrc"
 fi
 
