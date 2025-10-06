@@ -37,13 +37,26 @@ return {
       return git_blame.get_current_blame_text()
     end
 
+    opts.sections.lualine_y = {}
+    opts.sections.lualine_c = {}
+    opts.sections.lualine_x = {}
+    opts.sections.lualine_z = {}
+    opts.sections.lualine_b = {}
+
     table.insert(opts.sections.lualine_z, {
       function()
         return getBlame()
       end,
     })
 
-    opts.sections.lualine_y = {}
+    table.insert(opts.sections.lualine_c, {
+      "filename",
+      path = 1,
+    })
+
+    table.insert(opts.sections.lualine_z, {
+      "branch",
+    })
 
     local light = require("NeoSolarized.config").is_day()
     local palette = require("NeoSolarized.colors").dark
@@ -91,6 +104,7 @@ return {
     }
 
     local lualine_modes = { "insert", "normal", "visual", "command", "replace", "inactive", "terminal" }
+
     for _, field in ipairs(lualine_modes) do
       if theme[field] and theme[field].c then
         theme[field].c.bg = "NONE"

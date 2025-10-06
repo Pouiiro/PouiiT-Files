@@ -16,6 +16,15 @@ return {
     --       },
     --       sections = {},
     --     },
+    statuscolumn = {
+      enabled = true,
+      left = { "mark", "sign" },
+      right = { "fold", "git" },
+      folds = {
+        open = true, -- show open fold icons
+        git_hl = true,
+      },
+    },
     dashboard = {
       sections = {
         -- { section = "header" },

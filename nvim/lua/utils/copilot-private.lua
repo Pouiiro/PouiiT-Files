@@ -8,7 +8,6 @@ M = {}
 local public_paths = { "~/.config", "~/dotfiles" }
 local env_paths = vim.fn.getenv("NVIM_AI_ALLOWED_PATHS")
 -- export NVIM_AI_ALLOWED_PATHS="~/extra/path1,~/extra/path2"
-vim.notify("AI allowed paths: " .. tostring(env_paths), vim.log.levels.INFO, { title = "Copilot Private" })
 if env_paths and env_paths ~= "" then
   local env_paths_str = tostring(env_paths)
   for path in string.gmatch(env_paths_str, "([^,]+)") do
